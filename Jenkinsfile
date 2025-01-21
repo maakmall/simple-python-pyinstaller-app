@@ -1,10 +1,12 @@
 node {
+    checkout scm
+    
     def pythonImage = 'python:2-alpine'
     def pytestImage = 'qnib/pytest'
 
     stage('Build') {
         docker.image(pythonImage).inside {
-            echo 'Ccdompiling Python files...'
+            echo 'Compiling Python files...'
             sh 'python -m py_compile sources/add2vals.py sources/calc.py'
         }
     }
