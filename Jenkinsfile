@@ -28,7 +28,7 @@ node {
     stage('Deploy') {
         try {
             dir(env.BUILD_ID) {
-                unstash 'compiled-results'
+                unstash(name: 'compiled-results')
 
                 docker.image(pyinstallerImage).inside {
                     echo 'Running PyInstaller...'
