@@ -26,17 +26,15 @@ node {
     }
 
     stage('Deploy') {
-        try {
-            echo 'Running PyInstaller inside Docker...'
-            sh """
-            docker run --rm -v \$(pwd)/sources:/sources ${pyinstallerImage} pyinstaller -F /sources/add2vals.py
-            """
+        echo 'Running PyInstaller inside Docker...'
+        sh '''
+        docker run --rm -v $(pwd)/sources:/sources ${pyinstallerImage} \
+        pyinstaller --onefile /sources/add2vals.py
+        '''
 
-            archiveArtifacts artifacts: "sources/dist/add2vals", fingerprint: true
+        echo 'Archiving artifacts...'
+        archiveArtifacts artifacts: "sources/dist/add2vals", fingerprint: true
 
-            sleep(time: 1, unit: 'MINUTES')
-        } catch (Exception e) {
-            echo "Error during deploy: ${e.getMessage()}"
-        }
+        sleep(time: 1, unit: 'MINUTES')
     }
 }
