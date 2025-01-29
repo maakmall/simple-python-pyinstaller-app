@@ -27,14 +27,12 @@ node {
 
     stage('Deploy') {
         try {
-            dir(env.BUILD_ID) {
-                docker.image(pyinstallerImage).inside {
-                    echo 'Running PyInstaller...'
-                    sh "pyinstaller -F add2vals.py"
-                }
+            echo 'Running PyInstaller inside Docker...'
+            sh """
+            docker run --rm -v \$(pwd)/sources:/sources ${pyinstallerImage} pyinstaller -F /sources/add2vals.py
+            """
 
-                archiveArtifacts artifacts: "sources/dist/add2vals", fingerprint: true
-            }
+            archiveArtifacts artifacts: "sources/dist/add2vals", fingerprint: true
 
             sleep(time: 1, unit: 'MINUTES')
         } catch (Exception e) {
