@@ -3,7 +3,6 @@ node {
     
     def pythonImage = 'python:2-alpine'
     def pytestImage = 'qnib/pytest'
-    def pyinstallerImage = 'cdrx/pyinstaller-linux:python2'
 
     stage('Build') {
         docker.image(pythonImage).inside {
@@ -26,15 +25,15 @@ node {
     }
 
     stage('Deploy') {
-        docker.image(pyinstallerImage).inside {
+        docker.image(pythonImage).inside {
             echo 'Building Python application...'
             sh 'pip install pyinstaller'
             sh 'pyinstaller --onefile sources/add2vals.py'
-
-            sleep(time: 1, unit: 'MINUTES')
-            echo 'Archiving artifacts...'
         }
 
+        echo 'Archiving artifacts...'
         archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
+        
+        sleep(time: 1, unit: 'MINUTES')
     }
 }
