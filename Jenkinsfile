@@ -28,8 +28,6 @@ node {
     stage('Deploy') {
         try {
             dir(env.BUILD_ID) {
-                unstash(name: 'compiled-results')
-
                 docker.image(pyinstallerImage).inside {
                     echo 'Running PyInstaller...'
                     sh "pyinstaller -F add2vals.py"
