@@ -26,14 +26,13 @@ node {
     }
 
     stage('Deploy') {
-        echo 'Running PyInstaller inside Docker...'
-        sh """
-        docker run --rm -v \$(pwd)/sources:/sources cdrx/pyinstaller-linux:python2 \
-        pyinstaller --onefile /sources/add2vals.py
-        """
+        docker.image(pyInstallerImage).inside {
+            echo 'Building Python application...'
+            sh 'pyinstaller --onefile sources/add2vals.py'
+        }
 
         echo 'Archiving artifacts...'
-        archiveArtifacts artifacts: "sources/dist/add2vals", fingerprint: true
+        archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
 
         sleep(time: 1, unit: 'MINUTES')
     }
