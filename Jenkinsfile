@@ -1,7 +1,7 @@
 node {
     checkout scm
     
-    def pythonImage = 'python:2-alpine'
+    def pythonImage = 'python:3.9-alpine'
     def pytestImage = 'qnib/pytest'
 
     stage('Build') {
@@ -33,7 +33,7 @@ node {
 
         echo 'Archiving artifacts...'
         archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
-        
+
         sleep(time: 1, unit: 'MINUTES')
     }
 }
