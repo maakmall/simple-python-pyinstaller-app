@@ -19,4 +19,8 @@ node {
 
         junit 'test-reports/results.xml'
     }
+
+    stage('Manual Approval') {
+        input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
+    }
 }
