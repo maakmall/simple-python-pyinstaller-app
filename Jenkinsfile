@@ -25,7 +25,7 @@ node {
     }
 
     stage('Deploy') {
-        docker.image(pythonImage).inside {
+        docker.image(pythonImage).inside('--user root') {
             echo 'Building Python application...'
             sh 'pip install pyinstaller'
             sh 'pyinstaller --onefile sources/add2vals.py'
