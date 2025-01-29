@@ -1,7 +1,7 @@
 node {
     checkout scm
     
-    def pythonImage = 'python:3.9-alpine'
+    def pythonImage = 'python:3.9'
     def pytestImage = 'qnib/pytest'
 
     stage('Build') {
